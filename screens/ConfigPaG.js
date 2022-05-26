@@ -2,9 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {MaterialCommunityIcons,MaterialIcons}from 'react-native-vector-icons';
 import { NativeBaseProvider,Icon,ScrollView,Slider, Box,VStack,Pressable,FormControl,Input,Center,Heading,Link,Button,HStack,Text,Image } from "native-base";
 import { ImageBackground, StyleSheet, View } from "react-native";
+import { getAuth, signOut } from "firebase/auth";
 import Footer from './Footer';
 import Config from './Configuraciones';
 export{Footer,Config};
+import {auth} from '../firebase';
 const ConfigPaG=({navigation})=>{ 
   const image = { uri: "https://blogger.googleusercontent.com/img/a/AVvXsEiali7WU-43F4nIBs-TF-c1Xq1nFGk_4VdrMbzKW1f3sg0U5Z6oYyGJuhCTuxv4ka4QbEezEIajB9VW73TnCkvFZUwobGQhe8Lb81kSitd8yvbq-Lcqc3ZgpB1ebzhuOdvaSZ08TG8ca98a5qF0T7UT-kbfTNmQ_9owgzOus10PBy3AUcep-KrahDgo=w436-h654" };
   const [selected, setSelected] =React.useState(0);
@@ -14,8 +16,15 @@ const ConfigPaG=({navigation})=>{
   const handleClick = () => setIsHidden (!isHidden)
   const handleClick1 = () => setIsHidden1 (!isHidden1)
   const handleClick2 = () => setIsHidden2 (!isHidden2)
+  
   const [onChangeValue, setOnChangeValue] = React.useState(70);
   const FotoUsuario = { uri: "https://lh3.googleusercontent.com/-nc3z9IIAnpg/YY01fQFuG8I/AAAAAAAAA8k/ef5QX924vMMo9qIEpetkH5hc62V1cFuKACLcBGAsYHQ/perfil.png"};
+  const handleClose = () =>{
+    auth.signOut().then(() => {
+      navigation.replace("Inicio")
+    })
+    .catch(error => alert(error.mesage))
+  }
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -136,7 +145,7 @@ const ConfigPaG=({navigation})=>{
           </Slider.Track>
           <Slider.Thumb />
         </Slider>
-        <Pressable  onPress={()=>console.log("Cerrar Secion")} >
+        <Pressable  onPress={handleClose} >
       <Text color="white" fontSize="30" paddingTop={5}>Cerrar Seciòn</Text>
       </Pressable>
     </ScrollView>

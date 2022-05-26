@@ -1,10 +1,11 @@
-import React,{useEffect, useState} from "react";
+import React,{useState} from "react";
 import { NativeBaseProvider, Box,VStack,FormControl,Input,Center,Heading,Link,Button,HStack,Text,Image } from "native-base";
-import { ImageBackground, TouchableOpacity,StyleSheet, View } from "react-native";
+import { ImageBackground,KeyboardAvoidingView, StyleSheet, View } from "react-native";
 import {auth} from '../firebase';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-
-const Inicio=({navigation})=>{ 
+import {db} from '../firebase';
+import firebase from '../firebase';
+import {collection,getDocs} from "firebase/firestore";
+const Registro=({navigation})=>{ 
   const image = { uri: "https://blogger.googleusercontent.com/img/a/AVvXsEi_ItwqJOcvOHD-Ee3c1A5bzwQiltmQGXvu9RPBl_ejZlxsUvixGskTlEd3DAWklaJabDt3wB0UbGo7xar871vkiHxjtzLzj-OXohuwxvSrcod31g-tmidzop0O12jx7_xLkTzWytcSULUoKwGRyFIVF531uWmcQlVo2zrHFKlHWKskcLfki7q4gAyt=w478-h718" };
   const Sumit =()=>{
    navigation.navigate('Home')
@@ -12,41 +13,34 @@ const Inicio=({navigation})=>{
   }
   const [email,setEmail]= useState('')
   const [password,setPassword]= useState('')
-  useEffect(()=>{
-    auth.onAuthStateChanged( user =>{
-      if(user){
-        console.log("-",user.email)
-        navigation.navigate('Home')
-      }
-    })
-   
-  },[])
-  const handleSingIn2 =()=>{
-  const auth = getAut;
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in 
-      const user = userCredential.user;
-      // ...
-      console.log('Logeado con ',user.email);
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    });
-  
-
+  const [User,setUser]= useState('')
+  const guardarUsuario =()=>{
+    db.collection("usr").add({
+      name: User,
+      email: email.toLowerCase(),
+      password: password
+  })
+  .then((docRef) => {
+      console.log("Document written with ID: ", docRef.id);
+  })
+  .catch((error) => {
+      console.error("Error adding document: ", error);
+  });
   }
-
-  const handleSingIn =()=>{
-    auth.signInWithEmailAndPassword(email,password)
-    .then(userCredentials=>{
-      const user = userCredentials.user;
-      console.log('Logeado con ',user.email);
+  const handleSingUp =()=> {
+      auth
+      .createUserWithEmailAndPassword(email, password)
+      .then(userCredentials=>{
+        const user = userCredentials.user;
+        console.log(user.email);
+        Sumit()
+        guardarUsuario()
+      })
+      .catch(error => alert(error.message))
       
-    })
-    .catch(error => alert(error.message))
   }
+
+  
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -75,16 +69,33 @@ const Inicio=({navigation})=>{
    
   });
   return (
+    
     <NativeBaseProvider >
       <ImageBackground source={image} resizeMode="cover" style={styles.image}>
      <Center w="100%"> 
+    
         <Box safeArea p="2" py="8" w="90%" maxW="290"  >
-          <Center padding={15} marginTop={20}>
+          <Center padding={5} marginTop={5}>
               <Image size={150} resizeMode={"contain"} borderRadius={100} source={{
             uri: "https://blogger.googleusercontent.com/img/a/AVvXsEi9FrVoZ_qb_AvWeKYK4EsSrS6L0ISkzaIuw8SZ-H1be_wSOp4P7WQ81kYVqpR058WCJI0jIQhtI9EOKoRcwX3Wy_gxPGhrcibzs0WiZfMwT3qtJMif5nMXD2zvSE21b3GQoE3hI1I8TDKMIaczpbCLs4duhrde17ES8rjMFTLc-wblNY2XsG80Ei75"
           }} alt="Alternate Text" />
           </Center>
           <VStack space={3} mt="5">
+          <FormControl>
+              <FormControl.Label  ><Text style={{color:"white", fontSize:20}}>
+                User
+              </Text></FormControl.Label>
+              <Input
+               color={"white"} 
+               fontSize={20} 
+               bgColor={"#BF3939"} 
+               opacity={.8} 
+               value={User}
+               onChangeText={
+                 text=>setUser(text)
+               }
+               />
+            </FormControl>
             <FormControl>
               <FormControl.Label  ><Text style={{color:"white", fontSize:20}}>
                 Email
@@ -116,37 +127,17 @@ const Inicio=({navigation})=>{
                }
              
               ></Input>
-              <Link _text={{
-              fontSize: "xs",
-              fontWeight: "500",
-              color: "#F2BF5E"
-            }} alignSelf="flex-end" mt="1">
-                Forget Password?
-              </Link>
             </FormControl>
-            <Button mt="2" colorScheme="red" onPress={handleSingIn} >
-              Sign in
+            <Button mt="2" colorScheme="red" onPress={handleSingUp} >
+              Sign Up
             </Button>
-
-            <HStack mt="6" justifyContent="center">
-             
-              <Text style={{color:"white", fontSize:15}}>
-                I'm a new user.{" "}
-              </Text>
-              <TouchableOpacity  onPress={() =>{ 
-              navigation.navigate('Registro')
-              }} >
-               <Text style={{  color: "#D93D4A",
-              fontSize:15}}>
-                Sing Up.{" "}
-              </Text>
-              </TouchableOpacity>
-            </HStack>
           </VStack>
         </Box>
       </Center>
       </ImageBackground>
+      
     </NativeBaseProvider>
+    
   );
 }
-export default Inicio;
+export default Registro;
