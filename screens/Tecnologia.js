@@ -6,14 +6,17 @@ import Footer from './Footer';
 import {db} from '../firebase';
 import Config from './Configuraciones';
 export{Footer,Config};
-const Sugerencias=({navigation,route})=>{ 
+const Tecnologia=({navigation,route})=>{ 
   const {Suge} = route.params
-  const {data}= route.params
-  const {fisi}= route.params
-  const {Ciencia}= route.params
-  const {Español}= route.params
-  const {Filosofia}= route.params
-
+  const {Cine}=route.params
+  const{Farandula}=route.params
+  const {Literatura}=route.params
+  const {Comedia}=route.params
+  const {Tecnologia}=route.params
+  const {Computo}=route.params
+  const {Programacion}=route.params
+  const {Gaming}=route.params
+  const {IA}=route.params
   const image = { uri: "https://blogger.googleusercontent.com/img/a/AVvXsEi_ItwqJOcvOHD-Ee3c1A5bzwQiltmQGXvu9RPBl_ejZlxsUvixGskTlEd3DAWklaJabDt3wB0UbGo7xar871vkiHxjtzLzj-OXohuwxvSrcod31g-tmidzop0O12jx7_xLkTzWytcSULUoKwGRyFIVF531uWmcQlVo2zrHFKlHWKskcLfki7q4gAyt=w478-h718" };
   const styles = StyleSheet.create({
     container: {
@@ -68,9 +71,9 @@ const Sugerencias=({navigation,route})=>{
       </HStack>
       <ScrollView  maxHeight={600}>
       <Divider my="2" />
-      <Text color="white" fontSize="25"  style={styles.Titulos}>Matematicas</Text>
+      <Text color="white" fontSize="25"  style={styles.Titulos}>Computo</Text>
       <Divider my="2" />  
-        <FlatList margin={0} horizontal refreshing data={data}
+        <FlatList margin={0} horizontal refreshing data={Computo}
       
       renderItem={({item})=>
       <Pressable onPress={() => { 
@@ -78,12 +81,7 @@ const Sugerencias=({navigation,route})=>{
           Canal:item.Nombre,
           ImagenCanal:item.Img,
           SugeAc:Suge,
-          Capitulos:item.Capitulos,
-          fisi:fisi,
-          Ciencia:Ciencia,
-          Español:Español,
-          Filosofia:Filosofia,
-          data:data
+          Capitulos:item.Capitulos
         })
         }}>
       <Box  alignItems="center" h={240} w={250}>
@@ -129,11 +127,12 @@ const Sugerencias=({navigation,route})=>{
     </Pressable>
     }
       >
+     
       </FlatList>
       <Divider my="2" />
-      <Text color="white" fontSize="25"  style={styles.Titulos} >Física</Text>
-      <Divider my="2" />
-      <FlatList margin={0} horizontal refreshing data={fisi}
+      <Text color="white" fontSize="25"  style={styles.Titulos}>Programación</Text>
+      <Divider my="2" />  
+        <FlatList margin={0} horizontal refreshing data={Programacion}
       
       renderItem={({item})=>
       <Pressable onPress={() => { 
@@ -146,9 +145,8 @@ const Sugerencias=({navigation,route})=>{
         }}>
       <Box  alignItems="center" h={240} w={250}>
       <Box maxW="80" h={300}  rounded="lg" overflow="hidden" borderColor="#0D0D0D" borderWidth="1" _dark={{
-      borderColor: "#15D013",
-      backgroundColor: "#0D0D0D",
-      opacity:".6"
+      borderColor: "#0D0D0D",
+      backgroundColor: "#0D0D0D"
     }} _web={{
       shadow: 2,
       borderWidth: 0
@@ -176,7 +174,8 @@ const Sugerencias=({navigation,route})=>{
             <Heading   color={"white"} opacity={.8} size="md" ml="-1">
            | {item.Nombre}
             </Heading>
-            <Text padding={'5px'}  color={"white"} opacity={.5} fontWeight="400">
+            
+            <Text padding={'5px'} color={"white"} opacity={.5} fontWeight="400">
             {item.Des}
           </Text>
           </Stack>
@@ -187,12 +186,12 @@ const Sugerencias=({navigation,route})=>{
     </Pressable>
     }
       >
+     
       </FlatList>
       <Divider my="2" />
-      <Text color="white" fontSize="25"  style={styles.Titulos} >Ciencia</Text>
-      <Divider my="2" />
-
-      <FlatList margin={0} horizontal refreshing data={Ciencia}
+      <Text color="white" fontSize="25"  style={styles.Titulos}>Gaming</Text>
+      <Divider my="2" />  
+        <FlatList margin={0} horizontal refreshing data={Gaming}
       
       renderItem={({item})=>
       <Pressable onPress={() => { 
@@ -205,9 +204,8 @@ const Sugerencias=({navigation,route})=>{
         }}>
       <Box  alignItems="center" h={240} w={250}>
       <Box maxW="80" h={300}  rounded="lg" overflow="hidden" borderColor="#0D0D0D" borderWidth="1" _dark={{
-      borderColor: "#15D013",
-      backgroundColor: "#0D0D0D",
-      opacity:".6"
+      borderColor: "#0D0D0D",
+      backgroundColor: "#0D0D0D"
     }} _web={{
       shadow: 2,
       borderWidth: 0
@@ -235,7 +233,8 @@ const Sugerencias=({navigation,route})=>{
             <Heading   color={"white"} opacity={.8} size="md" ml="-1">
            | {item.Nombre}
             </Heading>
-            <Text padding={'5px'}  color={"white"} opacity={.5} fontWeight="400">
+            
+            <Text padding={'5px'} color={"white"} opacity={.5} fontWeight="400">
             {item.Des}
           </Text>
           </Stack>
@@ -246,12 +245,13 @@ const Sugerencias=({navigation,route})=>{
     </Pressable>
     }
       >
+     
       </FlatList>
+      
       <Divider my="2" />
-      <Text color="white" fontSize="25"  style={styles.Titulos} >Español</Text>
-      <Divider my="2" />
-
-      <FlatList margin={0} horizontal refreshing data={Español}
+      <Text color="white" fontSize="25"  style={styles.Titulos}>Inteligencia Artificial</Text>
+      <Divider my="2" />  
+        <FlatList margin={0} horizontal refreshing data={IA}
       
       renderItem={({item})=>
       <Pressable onPress={() => { 
@@ -264,9 +264,8 @@ const Sugerencias=({navigation,route})=>{
         }}>
       <Box  alignItems="center" h={240} w={250}>
       <Box maxW="80" h={300}  rounded="lg" overflow="hidden" borderColor="#0D0D0D" borderWidth="1" _dark={{
-      borderColor: "#15D013",
-      backgroundColor: "#0D0D0D",
-      opacity:".6"
+      borderColor: "#0D0D0D",
+      backgroundColor: "#0D0D0D"
     }} _web={{
       shadow: 2,
       borderWidth: 0
@@ -294,7 +293,8 @@ const Sugerencias=({navigation,route})=>{
             <Heading   color={"white"} opacity={.8} size="md" ml="-1">
            | {item.Nombre}
             </Heading>
-            <Text padding={'5px'}  color={"white"} opacity={.5} fontWeight="400">
+            
+            <Text padding={'5px'} color={"white"} opacity={.5} fontWeight="400">
             {item.Des}
           </Text>
           </Stack>
@@ -305,67 +305,8 @@ const Sugerencias=({navigation,route})=>{
     </Pressable>
     }
       >
+     
       </FlatList>
-      <Divider my="2" />
-      <Text color="white" fontSize="25"  style={styles.Titulos} >Filosofía</Text>
-      <Divider my="2" />
-
-      <FlatList margin={0} horizontal refreshing data={Filosofia}
-      
-      renderItem={({item})=>
-      <Pressable onPress={() => { 
-        navigation.navigate('Reproductor',{
-          Canal:item.Nombre,
-          ImagenCanal:item.Img,
-          SugeAc:Suge,
-          Capitulos:item.Capitulos
-        })
-        }}>
-      <Box  alignItems="center" h={240} w={250}>
-      <Box maxW="80" h={300}  rounded="lg" overflow="hidden" borderColor="#0D0D0D" borderWidth="1" _dark={{
-      borderColor: "#15D013",
-      backgroundColor: "#0D0D0D",
-      opacity:".6"
-    }} _web={{
-      shadow: 2,
-      borderWidth: 0
-    }} _light={{
-      backgroundColor: "#0D0D0D"
-    }}>
-        <Box >
-          <AspectRatio w="100%" ratio={16 / 9}>
-            <Image  source={{
-            uri: item.Img
-          }} alt="image" />
-          </AspectRatio>
-          <Center bg="violet.500" _dark={{
-          bg: "violet.400"
-        }} _text={{
-          color: "white",
-          fontWeight: "700",
-          fontSize: "xs"
-        }} position="absolute" bottom="0" px="3" py="1.5">
-            {item.Catego}
-          </Center>
-        </Box>
-        <Stack margin={0} >
-          <Stack >
-            <Heading   color={"white"} opacity={.8} size="md" ml="-1">
-           | {item.Nombre}
-            </Heading>
-            <Text padding={'5px'}  color={"white"} opacity={.5} fontWeight="400">
-            {item.Des}
-          </Text>
-          </Stack>
-         
-        </Stack>
-      </Box>
-    </Box>
-    </Pressable>
-    }
-      >
-      </FlatList>
-
 
 
 
@@ -380,4 +321,4 @@ const Sugerencias=({navigation,route})=>{
     </NativeBaseProvider>
   );
 }
-export default Sugerencias;
+export default Tecnologia;

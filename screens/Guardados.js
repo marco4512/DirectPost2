@@ -1,11 +1,25 @@
-import React from "react";
+import React, {useEffect, useState} from 'react';
 import {MaterialCommunityIcons,MaterialIcons}from 'react-native-vector-icons';
 import { NativeBaseProvider,Icon,ScrollView,AspectRatio,Divider,Stack,Pressable, Box,VStack,FormControl,Input,Center,Heading,Link,Button,HStack,Text,Image } from "native-base";
 import { ImageBackground,FlatList, StyleSheet, View } from "react-native";
 import Footer from './Footer';
 import Config from './Configuraciones';
+import {auth} from '../firebase';
+import {db} from '../firebase';
 export{Footer,Config};
 const Guardados=({navigation})=>{ 
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    let correo = ""+auth.currentUser.email
+    db.collection('Guardados').where("correo", "==", correo).get()
+      .then(querySnapshot => {
+        const Usuario = [];
+        querySnapshot.forEach(doc => {
+          Usuario.push(doc.data());
+        });
+        setData([...Usuario]);
+      });
+  }, []);
   const image = { uri: "https://blogger.googleusercontent.com/img/a/AVvXsEiali7WU-43F4nIBs-TF-c1Xq1nFGk_4VdrMbzKW1f3sg0U5Z6oYyGJuhCTuxv4ka4QbEezEIajB9VW73TnCkvFZUwobGQhe8Lb81kSitd8yvbq-Lcqc3ZgpB1ebzhuOdvaSZ08TG8ca98a5qF0T7UT-kbfTNmQ_9owgzOus10PBy3AUcep-KrahDgo=w436-h654" };
   const styles = StyleSheet.create({
     container: {
@@ -54,25 +68,27 @@ const Guardados=({navigation})=>{
       }}as={<MaterialIcons name="settings" />} color="white" size="sm" />
       </Center>
       </HStack>
+      <ScrollView  maxHeight={600}>
       <Divider my="2" />
-     <FlatList margin={0}  refreshing data={[
-        {key:'https://blogger.googleusercontent.com/img/a/AVvXsEjnYOPGlLy8Fy_GnsOizig8GrBFZfbjYMxgwRkjUA2NRiMHt7PMjg8atCN4iNFF1POFnPP7h4E5oq8ZBnQ28oE183rgCugTaoQ6LX_JZwJBr7qgFfSDwviBsa54FkeywknBRnEewjiByxvOdsrtG8f28hzw6wqNVwECNkpg65qv36yd9MZM1giVAojG',Nombre:'JulioProfe',Categoria:'Matematicas',Duracion:'53:30'},
-        {key:'https://blogger.googleusercontent.com/img/a/AVvXsEigAp4iT8vcrnwaiRRlFXzKceuc-SniqHjoY3x8kxa4Yy6mbEdpKLJy5aDCAC0Hp0d9g4sXm5jy_vW_obqx9MUXsGucHH5LuEGcr6RsXwSeVnQswL3UlqYxN1kz9TSAtY9nn6f5SCATOw6uafwe1o23SqQP2DCYmRpGtdKa9bKs9qC51rfECDkvpRDQ',Nombre:'CaminoAIng',Categoria:'Matematicas',Duracion:'60:30'},
-        {key:'https://blogger.googleusercontent.com/img/a/AVvXsEgU1m0FWkCETWyyQaqAAV6j48ZI_3xY3l-IL2n9whbQcshaOoVCUYAOdykJ6acprKqYVYoamcip2ROHyQ-WmAwhZdVqPtMcj_Z4ZoDVvtin_xcLCfHIjhhqt6v7hQI_Tg47WSGkXBjlSg-qRLtF2c4ROV95r_inrGluHsIPjo7iVzjRkCegcFdF2D3Y',Nombre:'MateFacil',Categoria:'Matematicas',Duracion:'70:50'},
-        {key:'https://blogger.googleusercontent.com/img/a/AVvXsEhajnl7c1AaMTKVH2STAYcqao423P_pmpPLnYlMpxt8GbzSXI9_gwEqp18lX6u0AIGNTTnkWgeQLqbuTO9w6XEDQJsc4p7LUfJwErZCRHGLtOEQbfMN42LQhBOHZc6WFZPT3zGtwI2qZiwUXnVHURWXBjPvwpab5qAvilhKl0fhYzW-9mTlvAjFPV-x',Nombre:'CodigoFacilito',Categoria:'Matematicas',Duracion:'20:60'},
-      ]}
-      
+     <FlatList margin={0}  refreshing data={data}
       renderItem={({item})=>
       <ScrollView maxHeight={550} >
-      <Pressable onPress={() => console.log(item.Nombre)}>
+      <Pressable onPress={() => {navigation.navigate('Reproduciendo',{
+          Imagen:item.ImgCap,
+          NombreCap:item.NombreCap,
+          Canal:item.Canal,
+          imgCa:item.ImgCap,
+          D:item.Duracion
+      })
+      }}>
        <HStack space={3} justifyContent="flex-start" >
        <Center w={"30%"}>
        <Image size={75} resizeMode={"contain"} borderRadius={10} source={{
-         uri:item.key
+         uri:item.ImgCap
        }} alt="Alternate Text" />
        </Center>
        <Center w={"40%"}>
-       <Text paddingLeft={5} color="white" fontSize="16" paddingTop={3}>{item.Nombre}</Text>
+       <Text paddingLeft={5} color="white" fontSize="16" paddingTop={3}>{item.NombreCap}</Text>
        </Center>
        <Center w={"30%"}>
        <Text paddingLeft={5} color="white" fontSize="12" paddingTop={3}>{item.Duracion}</Text>
@@ -84,7 +100,7 @@ const Guardados=({navigation})=>{
       }
         >
       </FlatList>
-      
+      </ScrollView>
       <Footer></Footer>
       </ImageBackground>
       

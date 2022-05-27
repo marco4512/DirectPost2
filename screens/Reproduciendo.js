@@ -4,15 +4,52 @@ import { NativeBaseProvider,Slider,Icon,ScrollView,AspectRatio,Divider,Stack,Pre
 import { ImageBackground,FlatList, StyleSheet, View } from "react-native";
 import Footer from './Footer';
 import Config from './Configuraciones';
+import {auth} from '../firebase';
+import {db} from '../firebase';
 export{Footer,Config};
 const Reproduciendo=({navigation,route})=>{ 
+  let correo = ""+auth.currentUser.email
+  let noGUta = false
     const {Imagen} = route.params
     const {NombreCap} = route.params
     const {Canal} = route.params
     const {imgCa} = route.params
     const {D}=route.params
+    const [Megusta, setMegusta]=  useState([]);
+  useEffect(() => {
+    db.collection('Guardados').where("correo", "==",correo)
+    .where("NombreCap", "==",NombreCap).get()
+    .then(querySnapshot => {
+      const Usuario = [];
+      querySnapshot.forEach(doc => {
+        Usuario.push(doc.data());
+        console.log(doc.data())
+
+      });
+      setMegusta([...Usuario])
+      Usuario.length ? (
+        setIsHidden (!isHidden)
+       ) : (
+        setNoGUta(true)
+       )
+
+      ;
+    });
+  }, []);
+   
+    const [a1, setA1]=useState( [{
+      Canal:Canal,
+      Duracion:D,
+      ImgCap:imgCa,
+      NombreCap:NombreCap,
+      correo:correo }]
+);
+
     const [isHidden, setIsHidden] = useState(false)
-    const handleClick = () => setIsHidden (!isHidden)
+    const [NoGUta, setNoGUta] = useState(false)
+    const handleClick = () =>{ 
+      isHidden ? EliminarMeguta():GuardadMegusta()
+      setIsHidden (!isHidden)}
     const [isHidden2, setIsHidden2] = useState(false)
     const handleClick2 = () => setIsHidden2 (!isHidden2)
     const [isHidden3, setIsHidden3] = useState(false)
@@ -20,6 +57,39 @@ const Reproduciendo=({navigation,route})=>{
     const handleClick3 = () => setIsHidden3 (!isHidden3)
     const [isHidden4, setIsHidden4] = useState(false)
     const handleClick4 = () => setIsHidden4 (!isHidden4)
+    
+    const Compara =()=>{
+      Megusta.length ? (
+       console.log("hola")
+      ) : (
+        console.log("nASDA")
+      )
+
+    }
+    const GuardadMegusta =()=>{
+      db.collection("Guardados").add({
+        Canal: Canal,
+        Duracion:D,
+        ImgCap: Imagen,
+        NombreCap:NombreCap,
+        correo: correo.toLowerCase()
+    })
+    .then((docRef) => {
+        console.log("Registrado En me Gusta: ", docRef.id);
+    })
+    .catch((error) => {
+        console.error("Error adding document: ", error);
+    });
+    }
+    const EliminarMeguta =()=>{
+      db.collection('Guardados').where("correo", "==",correo).where("NombreCap", "==",NombreCap).get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+            doc.ref.delete();
+        });
+    });
+    }
+
+
     
   const image = { uri: "https://blogger.googleusercontent.com/img/a/AVvXsEiali7WU-43F4nIBs-TF-c1Xq1nFGk_4VdrMbzKW1f3sg0U5Z6oYyGJuhCTuxv4ka4QbEezEIajB9VW73TnCkvFZUwobGQhe8Lb81kSitd8yvbq-Lcqc3ZgpB1ebzhuOdvaSZ08TG8ca98a5qF0T7UT-kbfTNmQ_9owgzOus10PBy3AUcep-KrahDgo=w436-h654" };
   const styles = StyleSheet.create({
@@ -108,7 +178,7 @@ const Reproduciendo=({navigation,route})=>{
         <Center  w={"10%"}>
         <Pressable borderWidth={0} onPress={handleClick} >
 
-        <Icon    mb="1" as={<MaterialCommunityIcons name={isHidden ? "cards-heart" : "heart-outline"} />} color="white" size="xl" />
+        <Icon   mb="1" as={<MaterialCommunityIcons name={isHidden ? "cards-heart" : "heart-outline"} />} color="red.900" size="xl" />
         </Pressable> 
               </Center>
       </HStack>

@@ -6,14 +6,13 @@ import Footer from './Footer';
 import {db} from '../firebase';
 import Config from './Configuraciones';
 export{Footer,Config};
-const Sugerencias=({navigation,route})=>{ 
+const Deportes=({navigation,route})=>{ 
   const {Suge} = route.params
-  const {data}= route.params
-  const {fisi}= route.params
-  const {Ciencia}= route.params
-  const {Español}= route.params
-  const {Filosofia}= route.params
-
+  const {Futbol}= route.params
+  const {Basquet}= route.params
+  const {Tenis}= route.params
+  const {Formula}= route.params
+  const {UFC}=route.params
   const image = { uri: "https://blogger.googleusercontent.com/img/a/AVvXsEi_ItwqJOcvOHD-Ee3c1A5bzwQiltmQGXvu9RPBl_ejZlxsUvixGskTlEd3DAWklaJabDt3wB0UbGo7xar871vkiHxjtzLzj-OXohuwxvSrcod31g-tmidzop0O12jx7_xLkTzWytcSULUoKwGRyFIVF531uWmcQlVo2zrHFKlHWKskcLfki7q4gAyt=w478-h718" };
   const styles = StyleSheet.create({
     container: {
@@ -68,9 +67,9 @@ const Sugerencias=({navigation,route})=>{
       </HStack>
       <ScrollView  maxHeight={600}>
       <Divider my="2" />
-      <Text color="white" fontSize="25"  style={styles.Titulos}>Matematicas</Text>
+      <Text color="white" fontSize="25"  style={styles.Titulos}>Basquetbol</Text>
       <Divider my="2" />  
-        <FlatList margin={0} horizontal refreshing data={data}
+        <FlatList margin={0} horizontal refreshing data={Basquet}
       
       renderItem={({item})=>
       <Pressable onPress={() => { 
@@ -78,12 +77,7 @@ const Sugerencias=({navigation,route})=>{
           Canal:item.Nombre,
           ImagenCanal:item.Img,
           SugeAc:Suge,
-          Capitulos:item.Capitulos,
-          fisi:fisi,
-          Ciencia:Ciencia,
-          Español:Español,
-          Filosofia:Filosofia,
-          data:data
+          Capitulos:item.Capitulos
         })
         }}>
       <Box  alignItems="center" h={240} w={250}>
@@ -129,11 +123,12 @@ const Sugerencias=({navigation,route})=>{
     </Pressable>
     }
       >
+     
       </FlatList>
       <Divider my="2" />
-      <Text color="white" fontSize="25"  style={styles.Titulos} >Física</Text>
-      <Divider my="2" />
-      <FlatList margin={0} horizontal refreshing data={fisi}
+      <Text color="white" fontSize="25"  style={styles.Titulos}>Fútbol</Text>
+      <Divider my="2" />  
+        <FlatList margin={0} horizontal refreshing data={Futbol}
       
       renderItem={({item})=>
       <Pressable onPress={() => { 
@@ -146,9 +141,8 @@ const Sugerencias=({navigation,route})=>{
         }}>
       <Box  alignItems="center" h={240} w={250}>
       <Box maxW="80" h={300}  rounded="lg" overflow="hidden" borderColor="#0D0D0D" borderWidth="1" _dark={{
-      borderColor: "#15D013",
-      backgroundColor: "#0D0D0D",
-      opacity:".6"
+      borderColor: "#0D0D0D",
+      backgroundColor: "#0D0D0D"
     }} _web={{
       shadow: 2,
       borderWidth: 0
@@ -176,7 +170,8 @@ const Sugerencias=({navigation,route})=>{
             <Heading   color={"white"} opacity={.8} size="md" ml="-1">
            | {item.Nombre}
             </Heading>
-            <Text padding={'5px'}  color={"white"} opacity={.5} fontWeight="400">
+            
+            <Text padding={'5px'} color={"white"} opacity={.5} fontWeight="400">
             {item.Des}
           </Text>
           </Stack>
@@ -187,12 +182,12 @@ const Sugerencias=({navigation,route})=>{
     </Pressable>
     }
       >
+     
       </FlatList>
       <Divider my="2" />
-      <Text color="white" fontSize="25"  style={styles.Titulos} >Ciencia</Text>
-      <Divider my="2" />
-
-      <FlatList margin={0} horizontal refreshing data={Ciencia}
+      <Text color="white" fontSize="25"  style={styles.Titulos}>Tenis</Text>
+      <Divider my="2" />  
+        <FlatList margin={0} horizontal refreshing data={Tenis}
       
       renderItem={({item})=>
       <Pressable onPress={() => { 
@@ -205,9 +200,8 @@ const Sugerencias=({navigation,route})=>{
         }}>
       <Box  alignItems="center" h={240} w={250}>
       <Box maxW="80" h={300}  rounded="lg" overflow="hidden" borderColor="#0D0D0D" borderWidth="1" _dark={{
-      borderColor: "#15D013",
-      backgroundColor: "#0D0D0D",
-      opacity:".6"
+      borderColor: "#0D0D0D",
+      backgroundColor: "#0D0D0D"
     }} _web={{
       shadow: 2,
       borderWidth: 0
@@ -235,7 +229,8 @@ const Sugerencias=({navigation,route})=>{
             <Heading   color={"white"} opacity={.8} size="md" ml="-1">
            | {item.Nombre}
             </Heading>
-            <Text padding={'5px'}  color={"white"} opacity={.5} fontWeight="400">
+            
+            <Text padding={'5px'} color={"white"} opacity={.5} fontWeight="400">
             {item.Des}
           </Text>
           </Stack>
@@ -246,12 +241,13 @@ const Sugerencias=({navigation,route})=>{
     </Pressable>
     }
       >
+     
       </FlatList>
+     
       <Divider my="2" />
-      <Text color="white" fontSize="25"  style={styles.Titulos} >Español</Text>
-      <Divider my="2" />
-
-      <FlatList margin={0} horizontal refreshing data={Español}
+      <Text color="white" fontSize="25"  style={styles.Titulos}>Formula uno</Text>
+      <Divider my="2" />  
+        <FlatList margin={0} horizontal refreshing data={Formula}
       
       renderItem={({item})=>
       <Pressable onPress={() => { 
@@ -264,9 +260,8 @@ const Sugerencias=({navigation,route})=>{
         }}>
       <Box  alignItems="center" h={240} w={250}>
       <Box maxW="80" h={300}  rounded="lg" overflow="hidden" borderColor="#0D0D0D" borderWidth="1" _dark={{
-      borderColor: "#15D013",
-      backgroundColor: "#0D0D0D",
-      opacity:".6"
+      borderColor: "#0D0D0D",
+      backgroundColor: "#0D0D0D"
     }} _web={{
       shadow: 2,
       borderWidth: 0
@@ -294,7 +289,8 @@ const Sugerencias=({navigation,route})=>{
             <Heading   color={"white"} opacity={.8} size="md" ml="-1">
            | {item.Nombre}
             </Heading>
-            <Text padding={'5px'}  color={"white"} opacity={.5} fontWeight="400">
+            
+            <Text padding={'5px'} color={"white"} opacity={.5} fontWeight="400">
             {item.Des}
           </Text>
           </Stack>
@@ -305,12 +301,12 @@ const Sugerencias=({navigation,route})=>{
     </Pressable>
     }
       >
+     
       </FlatList>
       <Divider my="2" />
-      <Text color="white" fontSize="25"  style={styles.Titulos} >Filosofía</Text>
-      <Divider my="2" />
-
-      <FlatList margin={0} horizontal refreshing data={Filosofia}
+      <Text color="white" fontSize="25"  style={styles.Titulos}>UFC</Text>
+      <Divider my="2" />  
+        <FlatList margin={0} horizontal refreshing data={UFC}
       
       renderItem={({item})=>
       <Pressable onPress={() => { 
@@ -323,9 +319,8 @@ const Sugerencias=({navigation,route})=>{
         }}>
       <Box  alignItems="center" h={240} w={250}>
       <Box maxW="80" h={300}  rounded="lg" overflow="hidden" borderColor="#0D0D0D" borderWidth="1" _dark={{
-      borderColor: "#15D013",
-      backgroundColor: "#0D0D0D",
-      opacity:".6"
+      borderColor: "#0D0D0D",
+      backgroundColor: "#0D0D0D"
     }} _web={{
       shadow: 2,
       borderWidth: 0
@@ -353,7 +348,8 @@ const Sugerencias=({navigation,route})=>{
             <Heading   color={"white"} opacity={.8} size="md" ml="-1">
            | {item.Nombre}
             </Heading>
-            <Text padding={'5px'}  color={"white"} opacity={.5} fontWeight="400">
+            
+            <Text padding={'5px'} color={"white"} opacity={.5} fontWeight="400">
             {item.Des}
           </Text>
           </Stack>
@@ -364,8 +360,8 @@ const Sugerencias=({navigation,route})=>{
     </Pressable>
     }
       >
+     
       </FlatList>
-
 
 
 
@@ -380,4 +376,4 @@ const Sugerencias=({navigation,route})=>{
     </NativeBaseProvider>
   );
 }
-export default Sugerencias;
+export default Deportes;

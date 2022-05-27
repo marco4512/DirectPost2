@@ -5,14 +5,22 @@ import { ImageBackground,SafeAreaView,FlatList,VirtualizedList, StyleSheet, View
 import Footer from './Footer';
 import Config from './Configuraciones';
 import {db} from '../firebase';
+import {auth} from '../firebase';
 export{Footer,Config};
 const Reproductor=({navigation,route})=>{ 
     const {Canal} = route.params
     const {ImagenCanal} = route.params
     const {SugeAc}=route.params
+    const {data}= route.params
+    const {fisi}= route.params
+    const {Ciencia}= route.params
+    const {Español}= route.params
+    const {Filosofia}= route.params
   const image = { uri: "https://blogger.googleusercontent.com/img/a/AVvXsEiali7WU-43F4nIBs-TF-c1Xq1nFGk_4VdrMbzKW1f3sg0U5Z6oYyGJuhCTuxv4ka4QbEezEIajB9VW73TnCkvFZUwobGQhe8Lb81kSitd8yvbq-Lcqc3ZgpB1ebzhuOdvaSZ08TG8ca98a5qF0T7UT-kbfTNmQ_9owgzOus10PBy3AUcep-KrahDgo=w436-h654" };
-  const [data, setData] = useState([]);
+  const [info, setinfo] = useState([]);
 
+  let correo = ""+auth.currentUser.email
+  
   useEffect(() => {
     db.collection('Educacion-Cap').where("Canal", "==", Canal).get()
       .then(querySnapshot => {
@@ -20,7 +28,7 @@ const Reproductor=({navigation,route})=>{
         querySnapshot.forEach(doc => {
           Usuario.push(doc.data());
         });
-        setData([...Usuario]);
+        setinfo([...Usuario]);
       });
   }, []);
   
@@ -59,7 +67,7 @@ const Reproductor=({navigation,route})=>{
       <HStack space={3} paddingTop={10} justifyContent="flex-start">
       <Center w={"30%"}>
       <Icon mb="1"onPress={() =>{ 
-      navigation.navigate('Sugerencias',{
+      navigation.navigate('Home',{
         Suge:SugeAc
       })
       }} as={<MaterialIcons name="chevron-left" />} color="white" size="sm" />
@@ -85,7 +93,7 @@ const Reproductor=({navigation,route})=>{
      
       <ScrollView maxHeight={380} >
       <SafeAreaView style={{flex: 1}}>
-      <FlatList margin={0}  refreshing data={data}
+      <FlatList margin={0}  refreshing data={info}
       
       renderItem={({item})=>
       
