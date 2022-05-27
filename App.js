@@ -15,6 +15,10 @@ import Ayuda from './screens/Ayuda';
 import CCÑ from './screens/CCÑ';
 import Reproductor from './screens/Reproductor';
 import Reproduciendo from './screens/Reproduciendo';
+import Registro from './screens/Registro';
+import Deportes from './screens/Deportes';
+import Entretenimiento from './screens/Entretenimiento';
+import Tecnologia from './screens/Tecnologia';
 
 export{Inicio,Home,Footer};
 const  Stack = createNativeStackNavigator();
@@ -44,12 +48,16 @@ const  Stack = createNativeStackNavigator();
         <Stack.Screen name ="Guardados" component={Guardados}/>
         <Stack.Screen name ="ConfigPaG" component={ConfigPaG}/>
         <Stack.Screen name ="Sugerencias" component={Sugerencias}/>
+        <Stack.Screen name ="Deportes" component={Deportes}/>
+        <Stack.Screen name ="Entretenimiento" component={Entretenimiento}/>
         <Stack.Screen name ="Perfil" component={Perfil}/>
         <Stack.Screen name ="CambioDeContraseña" component={CambioDeContraseña}/>
         <Stack.Screen name ="Ayuda" component={Ayuda}/>
+        <Stack.Screen name ="Tecnologia" component={Tecnologia}/>
         <Stack.Screen name ="CCÑ" component={CCÑ}/>
         <Stack.Screen name ="Reproductor" component={Reproductor}/>
         <Stack.Screen name ="Reproduciendo" component={Reproduciendo}/>
+        <Stack.Screen name ="Registro" component={Registro}/>
         
       </Stack.Navigator>
       </NativeBaseProvider>
