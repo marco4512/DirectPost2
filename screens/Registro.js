@@ -26,6 +26,16 @@ const Registro=({navigation})=>{
   .catch((error) => {
       console.error("Error adding document: ", error);
   });
+        db.collection("Idioma").add({
+          email: email.toLowerCase(),
+          Idioma:false
+      })
+      .then((docRef) => {
+          console.log("Registrado En Idioma ", docRef.id);
+      })
+      .catch((error) => {
+          console.error("Error adding Idioma ", error);
+      });
   }
   const handleSingUp =()=> {
       auth

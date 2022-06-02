@@ -7,6 +7,7 @@ import Config from './Configuraciones';
 import { useNavigation } from '@react-navigation/native';
 import { Height } from "@mui/icons-material";
 import {db} from '../firebase';
+import {auth} from '../firebase';
 export{Footer,Config};
 const Home=({navigation,route})=>{ 
   const [Basquet, setBasquet] = useState([]);
@@ -27,9 +28,18 @@ const Home=({navigation,route})=>{
   const [Programacion, setProgramacion]=  useState([]);
   const [Gaming, setGamin]=  useState([]);
   const [IA, setIA]=  useState([]);
-
+  const [Idioma, setIdioma] = useState([]);
   useEffect(() => {
     console.log("hola:D")
+    let correo = ""+auth.currentUser.email
+    db.collection('Idioma').where("email", "==", correo).get()
+      .then(querySnapshot => {
+        const Usuario = [];
+        querySnapshot.forEach(doc => {
+          Usuario.push(doc.data());
+        });
+        setIdioma([...Usuario]);
+      });
     db.collection('Educacion').where("Catego", "==", "Matematicas").get()
       .then(querySnapshot => {
         const Usuario = [];
@@ -256,7 +266,7 @@ const Home=({navigation,route})=>{
       <Center w={"30%"}>
       </Center>
       <Center w={"40%"}>
-      <Text color="white" fontSize="25">Topícos</Text>
+      <Text color="white" fontSize="25">{Idioma?"Topics":"Topícos"}</Text>
       </Center>
       <Center w={"30%"}>
       <Icon mb="1" onPress={() =>{ 
@@ -266,7 +276,7 @@ const Home=({navigation,route})=>{
       </HStack>
       <Divider my="2" />
      <Center w="100%"> 
-     <Text color="white" fontSize="27" >¿Què te gustarìa escuchar?</Text>
+     <Text color="white" fontSize="27" >{Idioma?"what would you like to listen?":"¿Què te gustarìa escuchar?"}</Text>
      <Text color="white" fontSize="30"></Text>
       </Center>
       

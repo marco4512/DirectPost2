@@ -8,6 +8,9 @@ export{Footer,Config};
 const CCÑ=({navigation,route})=>{ 
     const {FotoUsuario} = route.params
   const image = { uri: "https://blogger.googleusercontent.com/img/a/AVvXsEiali7WU-43F4nIBs-TF-c1Xq1nFGk_4VdrMbzKW1f3sg0U5Z6oYyGJuhCTuxv4ka4QbEezEIajB9VW73TnCkvFZUwobGQhe8Lb81kSitd8yvbq-Lcqc3ZgpB1ebzhuOdvaSZ08TG8ca98a5qF0T7UT-kbfTNmQ_9owgzOus10PBy3AUcep-KrahDgo=w436-h654" };
+  const [password,setPassword]= useState('')
+  
+
   const Sumit =()=>{
     navigation.navigate('Home')
     console.log("Home")
@@ -82,7 +85,9 @@ const CCÑ=({navigation,route})=>{
               <FormControl.Label><Text style={{color:"white", fontSize:20}}>
                 Nueva Contraseña
               </Text></FormControl.Label>
-              <Input type="password" color={"white"} fontSize={20} bgColor={"#BF3939"} opacity={.8} > 
+              <Input onChangeText={
+                 text => setPassword(text)
+               } type="password" color={"white"} fontSize={20} bgColor={"#BF3939"} opacity={.8} > 
               </Input>
             </FormControl>
             <FormControl  style={{color:"white", fontSize:20}} >

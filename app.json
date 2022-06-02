@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "Dp",
+    "name": "Directpost",
     "slug": "Dp",
-    "version": "1.0.0",
+    "version": "1.3.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/microfono.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/Group 27 (3).png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -23,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.companyname.DirectPost"
     },
     "web": {
       "favicon": "./assets/favicon.png"

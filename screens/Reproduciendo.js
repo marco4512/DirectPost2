@@ -7,7 +7,9 @@ import Config from './Configuraciones';
 import {auth} from '../firebase';
 import {db} from '../firebase';
 export{Footer,Config};
+
 const Reproduciendo=({navigation,route})=>{ 
+  
   let correo = ""+auth.currentUser.email
   let noGUta = false
     const {Imagen} = route.params

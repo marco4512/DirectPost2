@@ -15,7 +15,8 @@ const Perfil=({navigation,route})=>{
   const {NombreUsuario} = route.params
   const [users,setUsers]=useState([]);
   const [data, setData] = useState([]);
-
+  const [Idioma, setIdioma] = useState([]);
+  const [isHidden3, setIsHidden3] = useState(false)
   useEffect(() => {
     console.log(auth.currentUser.email)
     let correo = ""+auth.currentUser.email
@@ -26,6 +27,17 @@ const Perfil=({navigation,route})=>{
           Usuario.push(doc.data());
         });
         setData([...Usuario]);
+      });
+    db.collection('Idioma').where("email", "==", correo).get()
+      .then(querySnapshot => {
+        const Usuario = [];
+        querySnapshot.forEach(doc => {
+          Usuario.push(doc.data());
+        });
+        setIdioma([...Usuario]);
+        console.log(Usuario)
+        Usuario?setIsHidden3 (!isHidden3):setIsHidden3(isHidden3)
+        console.log(isHidden3)
       });
   }, []);
 
@@ -71,7 +83,7 @@ const Perfil=({navigation,route})=>{
       }} as={<MaterialIcons name="chevron-left" />} color="white" size="sm" />
       </Center>
       <Center paddingLeft={"25%"}>
-      <Text color="white" fontSize="30">Mi Cuenta</Text>
+      <Text color="white" fontSize="30">{Idioma?"My Accont":"Mi Cuenta"}</Text>
       </Center>
       </HStack>
       <Divider my="2" />
@@ -80,7 +92,7 @@ const Perfil=({navigation,route})=>{
       </Center>
       <Center paddingRight={4}>
     {data.length ? (
-        data.map(book => ( <Text color="white" key={book.email} textAlign="center" fontSize="25"> Usuario: {book.name}</Text>
+        data.map(book => ( <Text color="white" key={book.email} textAlign="center" fontSize="25"> {Idioma?"User: ":"Usuario: "} {book.name}</Text>
         ))
       ) : (
         <Text color="white" fontSize="30"></Text>
@@ -88,12 +100,12 @@ const Perfil=({navigation,route})=>{
       </Center >
       <HStack space={2} paddingTop={5} paddingBottom={5}  justifyContent="center">
       <Center >
-      <Text color="white" textAlign="center" fontSize="25">Correo: {auth.currentUser.email}</Text>
+      <Text color="white" textAlign="center" fontSize="25">{Idioma?"Email: " :"Correo: "}{auth.currentUser.email}</Text>
       </Center>
       </HStack>
       <Divider my="2" />
       <Center>
-      <Text color="white"  fontSize="20">Contraseña</Text>
+      <Text color="white"  fontSize="20">{Idioma?"Password":"Contraseña"}</Text>
       </Center>
       <HStack space={2} paddingTop={5} paddingBottom={5} justifyContent="center">
       <Center >
@@ -102,20 +114,20 @@ const Perfil=({navigation,route})=>{
         FotoUsuario:Imgen
       })
       }} >
-      <Text color="info.400" fontSize="17">Cambiar contraseña </Text>
+      <Text color="info.400" fontSize="17">{Idioma?"New Password":"Nueva contraseña"}</Text>
       </Pressable>
       </Center>
       </HStack>
       <Divider my="2" />
       <Center>
-      <Text color="white"  fontSize="20">Centro de Ayuda</Text>
+      <Text color="white"  fontSize="20">{Idioma?"Help":"Ayuda"}</Text>
       </Center>
       <HStack space={1} paddingTop={5} paddingBottom={5} justifyContent="center">
       <Center >
       <Pressable onPress={()=>  navigation.navigate('Ayuda',{
         FotoUsuario:Imgen
       }) } >
-      <Text color="info.400" fontSize="17">Si necesitas Ayuda, da click aquí</Text>
+      <Text color="info.400" fontSize="17">{Idioma?"If you need help, click here":"Si necesitas Ayuda, da click aquí"}</Text>
       </Pressable>
       </Center>
       </HStack>

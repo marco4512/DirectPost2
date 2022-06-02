@@ -7,15 +7,73 @@ import Footer from './Footer';
 import Config from './Configuraciones';
 export{Footer,Config};
 import {auth} from '../firebase';
+import {db} from '../firebase';
 const ConfigPaG=({navigation})=>{ 
   const image = { uri: "https://blogger.googleusercontent.com/img/a/AVvXsEiali7WU-43F4nIBs-TF-c1Xq1nFGk_4VdrMbzKW1f3sg0U5Z6oYyGJuhCTuxv4ka4QbEezEIajB9VW73TnCkvFZUwobGQhe8Lb81kSitd8yvbq-Lcqc3ZgpB1ebzhuOdvaSZ08TG8ca98a5qF0T7UT-kbfTNmQ_9owgzOus10PBy3AUcep-KrahDgo=w436-h654" };
   const [selected, setSelected] =React.useState(0);
   const [isHidden, setIsHidden] = useState(false)
   const [isHidden1, setIsHidden1] = useState(false)
   const [isHidden2, setIsHidden2] = useState(false)
+  const [isHidden3, setIsHidden3] = useState(false)
   const handleClick = () => setIsHidden (!isHidden)
   const handleClick1 = () => setIsHidden1 (!isHidden1)
   const handleClick2 = () => setIsHidden2 (!isHidden2)
+  const handleClick3 = () =>{ConfIdioma(); setIsHidden3 (!isHidden3); }
+  const [Idioma, setIdioma] = useState([]);
+  const [users,setUsers]=useState([]);
+  useEffect(() => {
+    console.log(auth.currentUser.email)
+    let correo = ""+auth.currentUser.email
+    db.collection('usr').where("email", "==", correo).get()
+      .then(querySnapshot => {
+        const Usuario = [];
+        querySnapshot.forEach(doc => {
+          Usuario.push(doc.data());
+        });
+        setUsers([...Usuario]);
+      });
+    
+    db.collection('Idioma').where("email", "==", correo).get()
+      .then(querySnapshot => {
+        const Usuario = [];
+        querySnapshot.forEach(doc => {
+          Usuario.push(doc.data());
+        });
+        setIdioma([...Usuario]);
+        Usuario?setIsHidden3 (!isHidden3):setIsHidden3(isHidden3)
+        console.log(isHidden3)
+      });
+     
+  }, []);
+ 
+  const ConfIdioma =()=>{
+    let correo = ""+auth.currentUser.email
+    console.log(correo)
+    db.collection('Idioma').where("email", "==",correo.toLocaleLowerCase()).where("Idioma", "==",isHidden3).get().then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc) {
+          doc.ref.delete();
+      });
+    });
+    db.collection("Idioma").add({
+        email: correo,
+        Idioma:(!isHidden3)
+    })
+    .then((docRef) => {
+        console.log("Registrado En me Gusta: ", docRef.id);
+    })
+    .catch((error) => {
+        console.error("Error adding document: ", error);
+    });
+    db.collection('Idioma').where("email", "==", correo.toLocaleLowerCase()).get()
+      .then(querySnapshot => {
+        const Usuario = [];
+        querySnapshot.forEach(doc => {
+          Usuario.push(doc.data());
+        });
+        setIdioma([...Usuario]);
+      });
+    
+  }
   
   const [onChangeValue, setOnChangeValue] = React.useState(70);
   const FotoUsuario = { uri: "https://lh3.googleusercontent.com/-nc3z9IIAnpg/YY01fQFuG8I/AAAAAAAAA8k/ef5QX924vMMo9qIEpetkH5hc62V1cFuKACLcBGAsYHQ/perfil.png"};
@@ -58,7 +116,7 @@ const ConfigPaG=({navigation})=>{
        
       <ImageBackground source={image} resizeMode="cover" style={styles.image}>
      <Center w="100%"> 
-        <Text color="white" fontSize="50" paddingTop={10}>Configuración</Text>
+        <Text color="white" fontSize="50" paddingTop={10}>{isHidden3 ? "Settings" : "Configuración"}</Text>
       </Center>
       <ScrollView maxHeight={550} >
       <HStack space={3} justifyContent="center" >
@@ -68,10 +126,15 @@ const ConfigPaG=({navigation})=>{
       <Center  paddingLeft={1}>
           <VStack space={2} alignItems="flex-start">
           <Center>
-          <Text color="white" fontSize="20" paddingTop={3}>Nombre del Usuario</Text>
+          {users.length ? (
+        users.map(book => ( <Text color="white" key={book.email} textAlign="center" fontSize="20">{book.name}</Text>
+        ))
+      ) : (
+        <Text color="white" fontSize="20" paddingTop={3}></Text>
+      )}
           </Center>
           <Center>
-          <Text color="white" fontSize="16" paddingTop={0}>Ver Perfil</Text>
+          <Text color="white" fontSize="16" paddingTop={0}>{isHidden3 ? "Account" : "Ver Perfil"}</Text>
           </Center>
           </VStack>
       </Center>
@@ -89,10 +152,10 @@ const ConfigPaG=({navigation})=>{
     <HStack space={2} paddingTop={5} justifyContent="flex-start" >
       <VStack space={2} paddingLeft={1} marginLeft={0} w={"60%"} alignItems="flex-start">
           <Center>
-          <Text color="white" fontSize="20" paddingTop={3}>Descargar solo el audio</Text>
+          <Text color="white" fontSize="20" paddingTop={3}>{isHidden3 ? "Download only the audio" : "Descargar solo el audio"}</Text>
           </Center>
           <Center>
-          <Text color="white" fontSize="16" paddingTop={0}>Guardar solo el audio de los podcast de video</Text>
+          <Text color="white" fontSize="16" paddingTop={0}>{isHidden3 ? "Save only audio from video podcasts" : "Guardar solo el audio de los podcast de video"}</Text>
           </Center>
         </VStack>
       <Center w={"40%"} paddingLeft={10} >
@@ -104,10 +167,10 @@ const ConfigPaG=({navigation})=>{
     <HStack space={2} paddingTop={5} justifyContent="flex-start" >
       <VStack space={2} paddingLeft={1} marginLeft={0} w={"60%"} alignItems="flex-start">
           <Center>
-          <Text color="white" fontSize="20" paddingTop={3}>Reproducir solo el audio</Text>
+          <Text color="white" fontSize="20" paddingTop={3}>{isHidden3 ? "Play only the audio" : "Reproducir solo el audio"}</Text>
           </Center>
           <Center>
-          <Text color="white" fontSize="16" paddingTop={0}>Reproducir solo el audio de los podcast</Text>
+          <Text color="white" fontSize="16" paddingTop={0}>{isHidden3 ? "Play only audio from podcasts" : "Reproducir solo el audio de los podcast"}</Text>
           </Center>
         </VStack>
       <Center w={"40%"} paddingLeft={10} >
@@ -119,10 +182,10 @@ const ConfigPaG=({navigation})=>{
     <HStack space={2} paddingTop={5} justifyContent="flex-start" >
       <VStack space={2} paddingLeft={1} marginLeft={0} w={"60%"} alignItems="flex-start">
           <Center>
-          <Text color="white" fontSize="20" paddingTop={3}>Permitir Recomendaciones</Text>
+          <Text color="white" fontSize="20" paddingTop={3}>{isHidden3 ? "Admit Recommendations" : "Permitir Recomendaciones"}</Text>
           </Center>
           <Center>
-          <Text color="white" fontSize="16" paddingTop={0}>Permitir que Direct Post recomiende podcast para ti</Text>
+          <Text color="white" fontSize="16" paddingTop={0}>{isHidden3 ? "Allow Direct Post to recommend a podcast for you" : "Permitir que Direct Post recomiende podcast para ti"}</Text>
           </Center>
         </VStack>
       <Center w={"40%"} paddingLeft={10} >
@@ -131,9 +194,24 @@ const ConfigPaG=({navigation})=>{
       </Pressable>
       </Center>
     </HStack>
+    <HStack space={2} paddingTop={5} justifyContent="flex-start" >
+      <VStack space={2} paddingLeft={1} marginLeft={0} w={"60%"} alignItems="flex-start">
+          <Center>
+          <Text color="white" fontSize="20" paddingTop={3}>{isHidden3 ? "Change language" : "Cambiar Idìoma"}</Text>
+          </Center>
+          <Center>
+          <Text color="white" fontSize="16" paddingTop={0}>{isHidden3 ? "Translate Content headers to English" : "Traducir Cabezeras de contenido a ingles"}</Text>
+          </Center>
+        </VStack>
+      <Center w={"40%"} paddingLeft={10} >
+      <Pressable borderWidth={0} onPress={handleClick3} >
+      <Icon   mb="1" as={<MaterialCommunityIcons name={ isHidden3 ? "toggle-switch" : "toggle-switch-off-outline"} />} color="white" size="xl" />
+      </Pressable>
+      </Center>
+    </HStack>
     <Center w="100%"> 
-        <Text color="white" fontSize="30" paddingTop={5}>Volumen Máximo</Text>
-        <Text color="white" fontSize="16" paddingTop={5}>Configura el volumen maximo de reproducción</Text>
+        <Text color="white" fontSize="30" paddingTop={5}>{isHidden3 ? "Maximum Volume" : "Volumen Máximo"}</Text>
+        <Text color="white" fontSize="16" paddingTop={5}>{isHidden3 ? "Set the maximum volume" : "Configura el volumen maximo de reproducción"}</Text>
         <Text color="white" fontSize="16">{onChangeValue}%</Text>
       </Center>
      
@@ -146,7 +224,7 @@ const ConfigPaG=({navigation})=>{
           <Slider.Thumb />
         </Slider>
         <Pressable  onPress={handleClose} >
-      <Text color="white" fontSize="30" paddingTop={5}>Cerrar Seciòn</Text>
+      <Text color="white" fontSize="30" paddingTop={5}>{isHidden3 ? "Sign off" : "Cerrar Seciòn"}</Text>
       </Pressable>
     </ScrollView>
       <Footer></Footer>
